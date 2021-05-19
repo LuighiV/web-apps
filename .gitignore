@@ -1,0 +1,8 @@
+nextcloud/.env
+nextcloud/data/*
+wordpress/.env
+wordpress/data/*
+nginx-proxy/certs/*
+nginx-proxy/conf.d/*
+nginx-proxy/vhost.d/*
+nginx-proxy/html/*

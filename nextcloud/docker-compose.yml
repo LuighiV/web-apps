@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${NEXT_DB_PASS}
+      - MYSQL_PASSWORD=${NEXT_DB_PASS}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: nextcloud:latest
+    restart: always
+    ports:
+      - 9090:80
+    links:
+      - db
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=${NEXT_DB_PASS}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+      - VIRTUAL_HOST=nextcloud.${HOST_DOMAIN}
+      - VIRTUAL_PORT=9090
+      - LETSENCRYPT_HOST=nextcloud.${HOST_DOMAIN}
+      - LETSENCRYPT_EMAIL=${EMAIL_DOMAIN}
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
