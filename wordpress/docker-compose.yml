@@ -8,7 +8,7 @@ services:
     ports:
       - 8080:80
     environment:
-      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_HOST=wp_db
       - WORDPRESS_DB_USER=wordpress
       - WORDPRESS_DB_PASSWORD=${WP_DB_PASS}
       - WORDPRESS_DB_NAME=wordpress
@@ -18,8 +18,10 @@ services:
       - LETSENCRYPT_EMAIL=${EMAIL_DOMAIN}
     volumes:
       - ./data/wordpress:/var/www/html
+    depends_on:
+      - wp_db
 
-  db:
+  wp_db:
     image: mysql:5.7
     restart: always
     environment:

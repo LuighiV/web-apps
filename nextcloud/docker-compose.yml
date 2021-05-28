@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  db:
+  next_db:
     image: mariadb
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
@@ -18,19 +18,19 @@ services:
     restart: always
     ports:
       - 9090:80
-    links:
-      - db
     volumes:
       - ./data/nextcloud:/var/www/html
     environment:
       - MYSQL_PASSWORD=${NEXT_DB_PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-      - MYSQL_HOST=db
+      - MYSQL_HOST=next_db
       - VIRTUAL_HOST=nextcloud.${HOST_DOMAIN}
       - VIRTUAL_PORT=9090
       - LETSENCRYPT_HOST=nextcloud.${HOST_DOMAIN}
       - LETSENCRYPT_EMAIL=${EMAIL_DOMAIN}
+    depends_on:
+      - next_db
 
 networks:
   default:
