@@ -12,6 +12,8 @@ services:
       - MYSQL_PASSWORD=${NEXT_DB_PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
+      - PHP_MEMORY_LIMIT=2048M
+      - PHP_UPLOAD_LIMIT=2048M
 
   app:
     image: nextcloud:latest

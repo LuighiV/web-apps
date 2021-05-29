@@ -32,6 +32,21 @@ The script receives the following environment variables:
 
 These variables could be declared inline or exported globally.
 
+## Configurations
+
+For a usable Nextcloud application you should configure the
+`client_max_body_size` in the nginx-proxy, otherwise file uploads will be
+restricted to 1Mb.
+
+The recommended procedure is to create a file in the `vhost.d` folder 
+under `nginx-proxy` with the name of the subdomain (Ex. `nextcloud.mydomain.com`) and with the following content:
+
+```
+client_max_body_size 3072m;
+```
+
+These settings allow a maximum value of 3Gb for the files to be
+uploaded. Otherwise, will receive a 413 code from the server.
 
 ## License
 
